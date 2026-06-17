@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local env
+.env
+
+# Generated outputs (added later when scripts exist)
+data/
+reports/
+
+# Editor/OS
+.DS_Store
+.vscode/
