@@ -1,4 +1,4 @@
-# Risk Radar
+# Account Risk Workbench
 
 Early WIP for an account-risk scoring project.
 
@@ -10,3 +10,6 @@ Synthetic only. Real customer/account data is not included.
 
 Status:
 Just getting started.
+
+First working note:
+- target draft: docs/target_definition.md
