@@ -1,35 +1,39 @@
 # Account Risk Scoring
 
-Early WIP for a small account risk watchlist prototype.
+This repo is a small sandbox for building an account risk watchlist from monthly snapshots.
 
-Goal:
-Build a small, reproducible pipeline that ranks accounts by 90-day risk.
+The current approach is simple on purpose: generate synthetic account data, define a first feature slice in SQL, and test scoring ideas before introducing a full model pipeline.
 
-Data:
-Synthetic only. Real customer/account data is not included.
+## What is here now
 
-Status:
-Still early, now with a first synthetic snapshot generator.
+- synthetic snapshot generator: `scripts/generate_account_snapshots_v1.py`
+- snapshot schema draft: `docs/account_snapshot_schema_v1.md`
+- target definition draft: `docs/target_definition.md`
+- first feature SQL draft: `sql/account_month_features_v1.sql`
 
-Current direction:
-- keep this as a practical sandbox for feature and label definitions
-- iterate on simple SQL slices before touching model training
-- if this holds up, grow it into a monthly risk watchlist workflow
+## Quick start
 
-What this is not yet:
-- production-ready data engineering
-- complete model pipeline
-- full monitoring setup
-
-First working notes:
-- target draft: docs/target_definition.md
-- snapshot schema v1: docs/account_snapshot_schema_v1.md
-
-Quick local run:
+Generate synthetic snapshot data:
 
 ```bash
 python3 scripts/generate_account_snapshots_v1.py --rows 200 --seed 7
 ```
 
-Output:
-- data/synthetic/account_snapshot_v1.csv (gitignored)
+This writes `data/synthetic/account_snapshot_v1.csv` (gitignored).
+
+## Optional JAX first step
+
+If you want to start using JAX early, install the CPU package and run the smoke script:
+
+```bash
+pip install "jax[cpu]"
+python3 scripts/jax_score_smoke.py --input data/synthetic/account_snapshot_v1.csv --top-n 10
+```
+
+The script reads the snapshot CSV and prints the top rows by a basic JAX-based risk score. It is not a trained model yet, just a first vectorized scoring pass.
+
+## Next likely steps
+
+- add a small synthetic event table for label generation
+- run the SQL feature draft in a repeatable local query flow
+- replace heuristic weights with a fitted baseline model
