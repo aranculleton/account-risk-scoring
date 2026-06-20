@@ -1,6 +1,6 @@
 # Account Risk Scoring
 
-Early WIP for an account-risk scoring project.
+Early WIP for a small account risk watchlist prototype.
 
 Goal:
 Build a small, reproducible pipeline that ranks accounts by 90-day risk.
@@ -10,6 +10,16 @@ Synthetic only. Real customer/account data is not included.
 
 Status:
 Still early, now with a first synthetic snapshot generator.
+
+Current direction:
+- keep this as a practical sandbox for feature and label definitions
+- iterate on simple SQL slices before touching model training
+- if this holds up, grow it into a monthly risk watchlist workflow
+
+What this is not yet:
+- production-ready data engineering
+- complete model pipeline
+- full monitoring setup
 
 First working notes:
 - target draft: docs/target_definition.md
