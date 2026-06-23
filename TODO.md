@@ -1,9 +1,9 @@
 # TODO
 
-## Current direction: RiskSignal Copilot
+## Current focus: CaseSignal MVP
 
 - [x] structured data foundation (snapshots -> events -> labels -> training slice)
-- [x] AI product integration plan (`docs/ai_workflow_roadmap.md`)
+- [x] AI integration plan (`docs/ai_workflow_roadmap.md`)
 
 - [ ] phase 1: baseline model script (`scripts/train_baseline_v1.py`)
 - [ ] phase 2: synthetic case-note generator (`scripts/generate_case_notes_v1.py`)

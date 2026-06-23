@@ -1,48 +1,64 @@
-# RiskSignal Copilot
+# CaseSignal
 
-`account-risk-scoring` is now focused on one thing:
-build a useful AI-powered risk triage layer on top of account risk scoring.
+`account-risk-scoring` is a practical account-risk scoring project.
 
-## What this project is
+## What is account-risk scoring?
 
-The product direction is a hybrid system:
-- normal risk score from structured data
-- AI-extracted risk signals from free-text case notes
-- combined priority score + short action summary for case workers
+Account-risk scoring means ranking accounts by the chance of a near-term adverse outcome,
+such as missed payments, arrears escalation, or collections handoff, so teams can intervene earlier.
 
-This keeps model math where it should be, and uses AI where it adds value
-(unstructured signals and decision support).
+CaseSignal is a prototype decision-support pipeline for that workflow.
 
-## What already exists
+Given monthly account data and case history text, the target output is:
+- a risk score
+- reason signals that explain why risk moved
+- a short triage summary with suggested next action
 
-Structured data pipeline:
-- synthetic snapshots
-- synthetic risk events
-- SQL feature draft
-- SQL label draft
+All data in this repository is synthetic.
+
+## Why use AI here?
+
+Structured models are useful, but they often miss high-signal context buried in case notes.
+
+AI is used for one bounded job: converting free-text case notes into a small, auditable set of structured indicators
+(for example hardship mention, income shock language, or vulnerability context).
+
+The final score remains deterministic and reviewable:
+- baseline structured model score
+- note-signal feature block
+- transparent score combination and action bands
+
+If note extraction fails, the pipeline falls back to structured-only scoring.
+
+## Current status
+
+Already in place:
+- synthetic snapshots and events generation
+- SQL feature and label drafts
 - training slice export
 
-Main files right now:
+Core files:
 - `scripts/generate_account_snapshots_v1.py`
 - `scripts/generate_risk_events_v1.py`
 - `scripts/export_training_slice_v1.py`
 - `sql/account_month_features_v1.sql`
 - `sql/labels_from_events_v1.sql`
 
-## Where AI is integrated (project direction)
+## Two-week MVP scope
 
-AI is part of the scoring product itself, not just development workflow.
+Week 1:
+1. train a baseline model on `training_slice_v1.csv`
+2. generate synthetic case notes linked to account-month rows
+3. define note-signal schema + deterministic fallback parser
 
-Planned integration:
-1. parse synthetic case notes into structured risk signals
-2. combine structured score + note-derived score
-3. output a short risk reason summary and next-best-action suggestion
+Week 2:
+1. add note-signal extraction step
+2. build hybrid score + action banding
+3. compare baseline vs hybrid (`precision@top-k`, lift, reviewer-time proxy)
 
-## Current roadmap
+This scope is intentionally sized for one developer over two focused weeks.
 
-See `docs/ai_workflow_roadmap.md` for the full start-to-finish plan.
-
-## Quick run (current baseline data flow)
+## Quick run (current data flow)
 
 ```bash
 python3 scripts/generate_account_snapshots_v1.py --rows 200 --seed 7
@@ -50,6 +66,11 @@ python3 scripts/generate_risk_events_v1.py
 python3 scripts/export_training_slice_v1.py
 ```
 
-## Next build step
+Expected outputs:
+- `data/synthetic/account_snapshot_v1.csv`
+- `data/synthetic/risk_events_v1.csv`
+- `data/synthetic/training_slice_v1.csv`
 
-Add the first baseline model script using `training_slice_v1.csv`, then layer in the first AI note-signal module.
+## Roadmap
+
+Detailed build plan: `docs/ai_workflow_roadmap.md`.
