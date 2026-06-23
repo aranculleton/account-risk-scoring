@@ -1,6 +1,6 @@
 # CaseSignal
 
-CaseSignal is a synthetic credit-risk decisioning pipeline.
+CaseSignal is a credit-risk decisioning pipeline built on synthetic data.
 
 It combines structured credit-account behavior with AI-extracted servicing-note signals
 to rank accounts by near-term delinquency or escalation risk, explain risk movement,
@@ -43,6 +43,30 @@ Core evaluation metrics:
 - lift@top-k
 - reviewer-time proxy
 
+The reviewer-time proxy estimates how many accounts a team would need to review
+to capture a fixed share of future escalations.
+
+## Current model comparison
+
+| Model | ROC-AUC | Precision@Top 10% | Lift@Top 10% | Reviewer-time proxy |
+| --- | --- | --- | --- | --- |
+| Structured baseline | 0.847 | 0.292 | 3.68 | 13.3% (32/240) for 50% escalation capture |
+| Structured + servicing-note signals | 0.790 | 0.333 | 4.21 | 14.2% (34/240) for 50% escalation capture |
+
+The table is populated by `scripts/score_hybrid_model_v1.py` and written to `reports/model_results.md`.
+
+## Implementation artifacts
+
+- `reports/model_results.md`
+- `docs/model_card.md`
+- `docs/ai_controls.md`
+- `data/synthetic/servicing_notes_v1.csv`
+- `scripts/train_baseline_model_v1.py`
+- `scripts/generate_servicing_notes_v1.py`
+- `scripts/extract_note_signals_v1.py`
+- `scripts/score_hybrid_model_v1.py`
+- `tests/`
+
 ## Current status
 
 Already in place:
@@ -75,15 +99,25 @@ This scope is intentionally sized for one developer over two focused weeks.
 ## Quick run (current data flow)
 
 ```bash
-python3 scripts/generate_account_snapshots_v1.py --rows 200 --seed 7
-python3 scripts/generate_risk_events_v1.py
+python3 scripts/generate_account_snapshots_v1.py --rows 1200 --seed 7
+python3 scripts/generate_risk_events_v1.py --seed 21
 python3 scripts/export_training_slice_v1.py
+python3 scripts/generate_servicing_notes_v1.py
+python3 scripts/extract_note_signals_v1.py
+python3 scripts/train_baseline_model_v1.py
+python3 scripts/score_hybrid_model_v1.py
 ```
 
 Expected outputs:
 - `data/synthetic/account_snapshot_v1.csv`
 - `data/synthetic/risk_events_v1.csv`
 - `data/synthetic/training_slice_v1.csv`
+- `data/synthetic/servicing_notes_v1.csv`
+- `data/synthetic/note_signals_v1.csv`
+- `data/synthetic/baseline_predictions_v1.csv`
+- `data/synthetic/hybrid_predictions_v1.csv`
+- `data/synthetic/model_metrics_v1.json`
+- `reports/model_results.md`
 
 ## Roadmap
 

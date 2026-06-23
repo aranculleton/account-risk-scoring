@@ -4,6 +4,19 @@ Goal:
 build and evaluate a practical credit-risk decisioning pipeline that combines
 structured credit-account behavior with AI-extracted servicing-note signals.
 
+## Status snapshot (current)
+
+Completed:
+- structured baseline training and holdout scoring
+- synthetic servicing-note generation
+- deterministic note-signal extraction
+- baseline vs hybrid evaluation report
+- model card and AI controls notes
+
+Remaining:
+- triage summary/action output script (`scripts/generate_case_summary_v1.py`)
+- optional LLM extractor as a bounded extension behind schema validation
+
 ## Problem
 
 Credit-risk decisioning ranks accounts by likelihood of near-term adverse outcomes,
@@ -45,12 +58,12 @@ but they can miss early warnings that appear first in servicing notes.
 ## Week 1 plan
 
 1. Baseline model
-- `scripts/train_baseline_v1.py`
+- `scripts/train_baseline_model_v1.py`
 - output ROC-AUC, PR-AUC, calibration note
 - save row-level predictions for comparison
 
 2. Synthetic servicing-note dataset
-- `scripts/generate_case_notes_v1.py`
+- `scripts/generate_servicing_notes_v1.py`
 - link servicing notes to account-month grain
 - document schema in `docs/case_note_schema_v1.md`
 
@@ -65,7 +78,7 @@ but they can miss early warnings that appear first in servicing notes.
 - persist indicators + confidence scores
 
 2. Hybrid score assembly
-- `scripts/build_hybrid_score_v1.py`
+- `scripts/score_hybrid_model_v1.py`
 - combine structured and note signal components
 
 3. Triage summary output
@@ -79,5 +92,10 @@ but they can miss early warnings that appear first in servicing notes.
 
 ## Immediate next step
 
-Implement baseline training first (`train_baseline_v1.py`) and lock baseline metrics.
+Implement baseline training first (`train_baseline_model_v1.py`) and lock baseline metrics.
 Then add note-signal AI as an incremental layer.
+
+Immediate artifact targets:
+- `reports/model_results.md`
+- `docs/model_card.md`
+- `docs/ai_controls.md`
