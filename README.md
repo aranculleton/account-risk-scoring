@@ -1,17 +1,16 @@
 # Account Risk Scoring
 
-This repo is where I am building out a monthly account-risk workflow in small steps.
+This repo is a practical account-risk pipeline built in small, realistic steps.
 
-Current flow right now:
+In plain terms, it does this:
 - generate synthetic account snapshots
-- build first-pass features in SQL
 - generate synthetic risk events
-- build a feature + label training slice CSV
-- run a quick score pass on the same data
+- build features and labels
+- export a training slice for modeling
 
 All data is synthetic at this stage.
 
-Where files are at:
+Key files:
 - `scripts/generate_account_snapshots_v1.py`
 - `scripts/generate_risk_events_v1.py`
 - `scripts/export_training_slice_v1.py`
@@ -19,6 +18,17 @@ Where files are at:
 - `sql/labels_from_events_v1.sql`
 - `docs/account_snapshot_schema_v1.md`
 - `docs/target_definition.md`
+- `docs/ai_workflow_roadmap.md`
+
+Why the AI workflow matters here:
+- many roles now ask for evidence of using Claude/Codex in real delivery work
+- this repo is set up to show that in a measurable way
+- goal is not "AI wrote code"; goal is faster iteration with human checks
+
+How AI is being used:
+- AI helps draft feature/SQL/model changes
+- each change is reviewed and either accepted or rejected
+- we keep checks around leakage, shape, and reproducibility
 
 Generate snapshots:
 
@@ -37,7 +47,8 @@ python3 scripts/export_training_slice_v1.py
 
 JAX step (optional):
 
-JAX here is just for a quick vectorized score check. It is not model training yet.
+JAX is currently used for a quick vectorized score check only.
+Baseline model training is a separate next step.
 
 Install and run:
 
@@ -54,4 +65,5 @@ What this script does:
 Next steps:
 
 - add first baseline model script using `training_slice_v1.csv`
+- add AI review logs for accepted/rejected suggestions
 - keep refining label quality and event generation assumptions

@@ -17,6 +17,13 @@ By the end, the project should show:
 - measurable deltas (time saved, defects caught, experiments completed)
 - clear documentation of where AI was used and where it was rejected
 
+## Why this is worth doing
+
+This is designed to be useful for hiring conversations:
+- proves AI was integrated into delivery, not just experimented with
+- shows human review and quality gates around AI suggestions
+- links each workflow change to concrete output (metrics, logs, run artifacts)
+
 ## Execution style
 
 - one thin slice per session
