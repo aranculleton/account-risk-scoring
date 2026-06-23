@@ -1,10 +1,10 @@
 # CaseSignal
 
-`account-risk-scoring` is a practical account-risk scoring project.
+`casesignal` is a practical account-risk scoring project.
 
 ## What is account-risk scoring?
 
-Account-risk scoring means ranking accounts by the chance of a near-term adverse outcome,
+Account-risk scoring means ranking accounts by the chance of a near-term credit-risk outcome,
 such as missed payments, arrears escalation, or collections handoff, so teams can intervene earlier.
 
 CaseSignal is a prototype decision-support pipeline for that workflow.
@@ -18,10 +18,13 @@ All data in this repository is synthetic.
 
 ## Why use AI here?
 
-Structured models are useful, but they often miss high-signal context buried in case notes.
+Structured models are useful, but they often miss high-signal context buried in servicing notes.
 
 AI is used for one bounded job: converting free-text case notes into a small, auditable set of structured indicators
 (for example hardship mention, income shock language, or vulnerability context).
+
+In this project, "case notes" means operational notes captured during account servicing,
+for example payment-arrangement discussions, hardship reviews, and follow-up calls.
 
 The final score remains deterministic and reviewable:
 - baseline structured model score
