@@ -40,6 +40,20 @@ def quantile(sorted_values: list[float], q: float) -> float:
     return sorted_values[idx]
 
 
+def collect_scores(predictions_path: Path, split: str) -> list[float]:
+    scores: list[float] = []
+    with predictions_path.open("r", newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            if split != "all" and row.get("split") != split:
+                continue
+            try:
+                scores.append(float(row["hybrid_score"]))
+            except (KeyError, ValueError):
+                continue
+    scores.sort()
+    return scores
+
+
 def main() -> int:
     args = parse_args()
     if not args.hybrid_predictions.exists():
@@ -49,21 +63,12 @@ def main() -> int:
         print("elevated-quantile must be <= high-quantile")
         return 1
 
-    scores: list[float] = []
-    with args.hybrid_predictions.open("r", newline="", encoding="utf-8") as handle:
-        for row in csv.DictReader(handle):
-            if args.split != "all" and row.get("split") != args.split:
-                continue
-            try:
-                scores.append(float(row["hybrid_score"]))
-            except (KeyError, ValueError):
-                continue
+    scores = collect_scores(args.hybrid_predictions, args.split)
 
     if not scores:
         print("No scores found for requested split")
         return 1
 
-    scores.sort()
     print(f"Rows evaluated: {len(scores)} (split={args.split})")
     for q in (0.50, 0.75, 0.90, 0.95, 0.99):
         print(f"p{int(q * 100):02d}: {quantile(scores, q):.4f}")
