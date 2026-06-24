@@ -18,6 +18,19 @@ CaseSignal models that workflow with:
 - note-derived risk indicators from servicing notes
 - hybrid score bands and review-ready context
 
+## Architecture
+
+```mermaid
+flowchart LR
+	A[data generation] --> B[SQL features + labels]
+	B --> C[baseline model]
+	A --> D[servicing notes]
+	D --> E[note signal extraction]
+	C --> F[hybrid score]
+	E --> F
+	F --> G[case summary + report]
+```
+
 ## Why AI is used (and bounded)
 
 AI is used for one narrow task: converting unstructured servicing notes into
