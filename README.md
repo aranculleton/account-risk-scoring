@@ -142,6 +142,9 @@ Check hybrid-score threshold suggestions:
 
 ```bash
 python3 scripts/check_hybrid_thresholds_v1.py --split test --elevated-quantile 0.85 --high-quantile 0.95
+
+# optional: write threshold summary JSON for records/debugging
+python3 scripts/check_hybrid_thresholds_v1.py --split test --json-out reports/threshold_suggestions_v1.json
 ```
 
 Expected outputs:
